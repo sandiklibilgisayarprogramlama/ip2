@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tüm Notlar</title>
+</head>
+<body>
+    <h1>Tüm Not Listesi</h1>
+    {% for note in notlar  %}
+    <h2>{{note.baslik}}</h2>
+    <p>{{note.icerik}}</p>
+    {%endfor%}
+</body>
+</html>
