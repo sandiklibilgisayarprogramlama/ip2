@@ -1,16 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Not Uygulaması</title>
-</head>
-<body>
-    <form action="/notekle" method="POST" >
-        <input type="text" name="inp_baslik" ><br>
-        <textarea name="txt_icerik" ></textarea><br>
-        <input type="submit" value="Ekle" >
-    </form>
-</body>
-</html>
+{% extends "_temp2.html" %}
+{% block baslik %}
+Yönetim Paneli | Not Ekle
+{% endblock baslik %}
+{% block icerik %}
+<div class="container" >
+    <div class="row " >
+        <div class="col-2" ></div>
+        <div class="col" >
+            <form action="/notekle" method="POST" >
+                <div class="form-group">
+                  <label for="exampleFormControlInput1">Not Başlığı</label>
+                  <input type="text" name="inp_baslik" class="form-control" id="exampleFormControlInput1" >
+                </div>
+            
+                <div class="form-group">
+                  <label for="exampleFormControlTextarea1">Not İçeriği</label>
+                  <textarea name="txt_icerik" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                </div>
+                <input type="submit" class="btn btn-success" value="Kaydet">
+              </form>
+        </div>
+        <div class="col-2" ></div>
+    </div>
+</div>
+
+
+{% endblock icerik %}

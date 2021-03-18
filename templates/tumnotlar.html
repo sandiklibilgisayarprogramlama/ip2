@@ -1,16 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tüm Notlar</title>
-</head>
-<body>
-    <h1>Tüm Not Listesi</h1>
-    {% for note in notlar  %}
-    <h2>{{note.baslik}}</h2>
-    <p>{{note.icerik}}</p>
-    {%endfor%}
-</body>
-</html>
+{% extends "_temp2.html" %}
+{% block baslik %}
+Yönetim Paneli | Tüm Notlar
+{% endblock baslik %}
+
+{% block icerik %}
+
+<div class="container" >
+    <div class="row justify-content-center mt-2">
+        <div class="col-12 col-md-10 col-lg-8">
+            <form class="card card-sm">
+                <div class="card-body row no-gutters align-items-center">
+                    <div class="col-auto">
+                        <i class="fas fa-search h4 text-body"></i>
+                    </div>
+                    <!--end of col-->
+                    <div class="col">
+                        <input class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search topics or keywords">
+                    </div>
+                    <!--end of col-->
+                    <div class="col-auto">
+                        <button class="btn btn-lg btn-success" type="submit">Search</button>
+                    </div>
+                    <!--end of col-->
+                </div>
+            </form>
+        </div>
+        <!--end of col-->
+    </div>
+            
+    </div>
+    <div class="row mt-2" >
+        <div class="col-1" ></div>
+        <div class="col text-center" >
+            <h1>Tüm Not Listesi</h1>
+            {% for note in notlar  %}
+                <h2>{{note.baslik}}</h2>
+                <p>{{note.icerik}}</p>
+            {%endfor%}
+        </div>
+        <div class="col-1" ></div>
+    </div>
+</div>
+
+
+{% endblock icerik %}

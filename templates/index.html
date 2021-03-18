@@ -22,7 +22,12 @@
             <input type="submit" class="btn btn-primary" value="Login">
             <a href="/kayitol" >Please click this link to Signup</a>
         </form>
-
+        <br>
+        {% if hata %}
+        <div class="alert alert-danger" >
+            {{hata}}
+        </div>
+        {% endif %}
         </div>
         <div class="col-4"></div>
     </div>
