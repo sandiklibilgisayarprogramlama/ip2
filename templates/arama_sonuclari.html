@@ -19,7 +19,7 @@ Yönetim Paneli | Tüm Notlar
                     </div>
                     <!--end of col-->
                     <div class="col-auto">
-                        <input class="btn btn-lg btn-success" type="submit" value="Arama" >
+                        <input class="btn btn-lg btn-success" type="submit" value="Tekrar Ara">
                     </div>
                     <!--end of col-->
                 </div>
@@ -29,31 +29,28 @@ Yönetim Paneli | Tüm Notlar
     </div>
             
     </div>
-    <div class="row" >
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-        <div class="{{ category }}" >
-            {{ message }}
-        </div>
-        {% endif %}
-    {% endwith %}
-    </div>
     <div class="row mt-2 " >
         <div class="col-1" ></div>
         <div class="col " >
-            <h1 class="text-center" >Tüm Not Listesi</h1>
-            {% for note in notlar  %}
-                <div class="card mx-auto" style="width: 18rem">
-                    <div class="card-body">
-                    <h5 class="card-title">{{note.baslik}}</h5>
-                    <p class="card-text">
-                        {{note.icerik}}
-                    </p>
-                    <a href="/guncelle/{{note.id}}" class="card-link">Güncelle</a>
-                    <a href="/sil/{{note.id}}" class="card-link">Sil</a>
+            <h1 class="text-center" >Arama Sonucları</h1>
+            <form action="/sil" method="POST" >
+            {% if aramasonuclari %}
+                {% for note in aramasonuclari  %}
+                    <div class="card mx-auto" style="width: 18rem">
+                        <div class="card-body">
+                        <h5 class="card-title">{{note.baslik}}</h5>
+                        <p class="card-text">
+                            {{note.icerik}}
+                        </p>
+                        <a href="#" class="card-link">Güncelle</a>
+                        <a href="#" class="card-link">Sil</a>
+                        </div>
                     </div>
-                </div>
-            {%endfor%}
+                {%endfor%}
+            {%else%}
+                <h5 class="text-center mt-3" >Aradığınız kritere uygun sonuç bulunamadı</h5>
+            {%endif%}
+        </form>
         </div>
         <div class="col-1" ></div>
     </div>
