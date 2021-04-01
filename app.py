@@ -37,23 +37,44 @@ def anasayfa():
 
 @app.route("/arama",methods=["POST"])
 def arama():
-    if request.method=="POST":
-        arama_metni = request.form.get("inp_arama")
-        sonuc = Notlar.select().where(Notlar.baslik.contains(arama_metni.replace("İ","I").lower()))
+    if "kadi" in session:
+        if request.method=="POST":
+            arama_metni = request.form.get("inp_arama")
+            sonuc = Notlar.select().where(Notlar.baslik.contains(arama_metni.replace("İ","I").lower()))
 
-        return render_template("arama_sonuclari.html",aramasonuclari=sonuc)
+            return render_template("arama_sonuclari.html",aramasonuclari=sonuc)
+    else:
+        return redirect("/")
 
 
 @app.route("/sil/<id>",methods=["GET"])
 def sil(id):
-    result= Notlar.delete_by_id(id)
-    print(result)
-    if result:
-        flash("Not başarıyla silindi !",category="error")
-    else:
-        flash("Silme esnasında bir problem var !",category="alert alert-danger")
+    if "kadi" in session:
+        result= Notlar.delete_by_id(id)
+        if result:
+            flash("Not başarıyla silindi !",category="alert alert-success")
+        else:
+            flash("Silme esnasında bir problem var !",category="alert alert-danger")
 
-    return render_template("tumnotlar.html")
+        return redirect("/tumnotlar")
+    else:
+        return redirect("/")
+
+@app.route("/guncelle/<id>",methods=["GET","POST"])
+def guncelle(id):
+    if "kadi" in session:
+        if request.method=="POST":
+            yeni_baslik=request.form.get("inp_baslik")
+            yeni_icerik=request.form.get("txt_icerik")
+            today = datetime.time()
+            query = Notlar.update(baslik=yeni_baslik,icerik=yeni_icerik,yayintarihi=today).where(Notlar.id == id)
+            query.execute() 
+            return redirect("/tumnotlar")
+
+        sonuc = Notlar.select().where(Notlar.id==id)
+        return render_template("guncelle.html",guncellenecek = sonuc)
+    else:
+        return redirect("/")
 
 @app.route("/notekle",methods=["POST","GET"])
 def notekle():

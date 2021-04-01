@@ -28,7 +28,7 @@ Yönetim Paneli | Tüm Notlar
         <!--end of col-->
     </div>
             
-    </div>
+ 
     <div class="row" >
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
@@ -43,11 +43,11 @@ Yönetim Paneli | Tüm Notlar
         <div class="col " >
             <h1 class="text-center" >Tüm Not Listesi</h1>
             {% for note in notlar  %}
-                <div class="card mx-auto" style="width: 18rem">
+                <div class="card mx-auto" >
                     <div class="card-body">
-                    <h5 class="card-title">{{note.baslik}}</h5>
+                    <h5 class="card-title">{{note.baslik|safe}}</h5>
                     <p class="card-text">
-                        {{note.icerik}}
+                        {{note.icerik|safe}}
                     </p>
                     <a href="/guncelle/{{note.id}}" class="card-link">Güncelle</a>
                     <a href="/sil/{{note.id}}" class="card-link">Sil</a>
