@@ -2,16 +2,28 @@
 # pip install peewee
 
 import datetime
-from flask import Flask,request,redirect,session
+from flask import Flask,request,redirect,session,g
 from flask.helpers import flash, url_for
 from flask.templating import render_template
-from database import Kullanici, Notlar
+from database import Kullanici, Notlar,db_proxy
 from werkzeug.security import generate_password_hash, check_password_hash
 import locale
 locale.setlocale(locale.LC_ALL, 'tr_TR.utf8')
+from peewee import *
+
 
 app=Flask(__name__)
 app.secret_key="06e3af3ce8e1d5030e581fd8f038de3810ea16b7b9ea586c"
+
+@app.before_request
+def before_request():
+    g.db = db_proxy
+    g.db.connect()
+
+@app.after_request
+def after_request(response):
+    g.db.close()
+    return response
 
 @app.route("/",methods=["POST","GET"])
 def anasayfa():

@@ -28,7 +28,7 @@ Yönetim Paneli | Tüm Notlar
         <!--end of col-->
     </div>
             
-    </div>
+   
     <div class="row mt-2 " >
         <div class="col-1" ></div>
         <div class="col " >
@@ -36,11 +36,11 @@ Yönetim Paneli | Tüm Notlar
             <form action="/sil" method="POST" >
             {% if aramasonuclari %}
                 {% for note in aramasonuclari  %}
-                    <div class="card mx-auto" style="width: 18rem">
+                    <div class="card mx-auto" >
                         <div class="card-body">
-                        <h5 class="card-title">{{note.baslik}}</h5>
+                        <h5 class="card-title">{{note.baslik|safe}}</h5>
                         <p class="card-text">
-                            {{note.icerik}}
+                            {{note.icerik|safe}}
                         </p>
                         <a href="#" class="card-link">Güncelle</a>
                         <a href="#" class="card-link">Sil</a>

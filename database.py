@@ -1,11 +1,12 @@
 from enum import unique
 from peewee import *
+import os
+db_proxy = Proxy()
 
-db = SqliteDatabase("notlar.db")
 
 class BaseModel(Model):
     class Meta:
-        database=db
+        database=db_proxy
 
 class Kullanici(BaseModel):
     kullaniciadi=CharField(unique=True)
@@ -17,5 +18,16 @@ class Notlar(BaseModel):
     icerik=TextField()
     yayintarihi = CharField()
 
-db.connect()
-db.create_tables([Kullanici,Notlar])
+if 'HEROKU' in os.environ:
+    import urlparse, psycopg2
+    urlparse.uses_netloc.append('postgres')
+    url = urlparse.urlparse(os.environ["DATABASE_URL"])
+    db = PostgresqlDatabase(database=url.path[1:], user=url.username, password=url.password, host=url.hostname, port=url.port)
+    db_proxy.initialize(db)
+else:
+    db = SqliteDatabase('notlar.db')
+    db_proxy.initialize(db)
+
+if __name__ == '__main__':
+    db_proxy.connect()
+    db_proxy.create_tables([Kullanici,Notlar], safe=True)
