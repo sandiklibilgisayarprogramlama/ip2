@@ -7,8 +7,8 @@ from flask.helpers import flash, url_for
 from flask.templating import render_template
 from database import Kullanici, Notlar,db_proxy
 from werkzeug.security import generate_password_hash, check_password_hash
-import locale
-locale.setlocale(locale.LC_ALL, 'tr_TR.utf8')
+#import locale
+#locale.setlocale(locale.LC_ALL, 'tr_TR.utf8')
 from peewee import *
 
 
