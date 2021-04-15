@@ -17,6 +17,7 @@ class Notlar(BaseModel):
     baslik=CharField(max_length=1000)
     icerik=TextField()
     yayintarihi = CharField()
+    kullaniciadi = CharField()
 
 if 'HEROKU' in os.environ:
     import urlparse, psycopg2

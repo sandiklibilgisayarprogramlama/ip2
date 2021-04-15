@@ -2,8 +2,8 @@
 # pip install peewee
 
 import datetime
-from flask import Flask,request,redirect,session,g
-from flask.helpers import flash, url_for
+from flask import Flask,request,redirect,session,g,flash
+from flask.helpers import url_for
 from flask.templating import render_template
 from database import Kullanici, Notlar,db_proxy
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -80,7 +80,13 @@ def guncelle(id):
             yeni_icerik=request.form.get("txt_icerik")
             today = datetime.time()
             query = Notlar.update(baslik=yeni_baslik,icerik=yeni_icerik,yayintarihi=today).where(Notlar.id == id)
-            query.execute() 
+            result=query.execute()
+
+            if result:
+                flash("Not başarıyla Güncellendi !",category="alert alert-success")
+            else:
+                flash("Güncelleme esnasında bir problem var !",category="alert alert-danger")
+
             return redirect("/tumnotlar")
 
         sonuc = Notlar.select().where(Notlar.id==id)
@@ -94,8 +100,13 @@ def notekle():
         if request.method=="POST":
             gelenbaslik = request.form.get("inp_baslik")
             gelenicerik = request.form.get("txt_icerik")
-            note = Notlar.create(baslik=gelenbaslik,icerik=gelenicerik,yayintarihi=datetime.time())
-            note.save()
+            note = Notlar.create(baslik=gelenbaslik,icerik=gelenicerik,yayintarihi=datetime.time(),kullaniciadi=session["kadi"])
+            result=note.save()
+
+            if result:
+                flash("Not başarıyla eklendi !",category="alert alert-success")
+            else:
+                flash("Not ekleme esnasında bir problem var !",category="alert alert-danger")
             return redirect("/tumnotlar")
         
         return render_template("notekle.html")
@@ -105,7 +116,7 @@ def notekle():
 @app.route("/tumnotlar")
 def tumnotlar():
     if "kadi" in session:
-        notes=Notlar.select()
+        notes=Notlar.select().where(Notlar.kullaniciadi==session["kadi"])
         return render_template("tumnotlar.html",notlar=notes)
     else:
         return redirect("/")

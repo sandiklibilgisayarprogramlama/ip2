@@ -1,7 +1,12 @@
 {% extends "_temp2.html" %}
-{% block baslik %}
-Yönetim Paneli | Tüm Notlar
-{% endblock baslik %}
+{% block head %}
+<title>Yönetim Paneli | Tüm Notlar</title>
+<script>
+    setTimeout(function(){
+        document.getElementById('pmessage').style.display = 'none';
+    }, 5000); // 10000ms = 10s
+</script>
+{% endblock head %}
 
 {% block icerik %}
 
@@ -15,11 +20,11 @@ Yönetim Paneli | Tüm Notlar
                     </div>
                     <!--end of col-->
                     <div class="col">
-                        <input name="inp_arama" class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search topics or keywords">
+                        <input name="inp_arama" class="form-control form-control-borderless" type="search" placeholder="Search topics or keywords">
                     </div>
                     <!--end of col-->
                     <div class="col-auto">
-                        <input class="btn btn-lg btn-success" type="submit" value="Arama" >
+                        <input class="btn btn-success" type="submit" value="Arama" >
                     </div>
                     <!--end of col-->
                 </div>
@@ -27,21 +32,25 @@ Yönetim Paneli | Tüm Notlar
         </div>
         <!--end of col-->
     </div>
-            
- 
-    <div class="row" >
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-        <div class="{{ category }}" >
-            {{ message }}
-        </div>
-        {% endif %}
-    {% endwith %}
-    </div>
+
+    {% for category, message in get_flashed_messages(with_categories=true) %}
+    <div id="pmessage" class="row no-gutters position-fixed" style="top:60px;right:30px;">
+		<div class="col-lg-12 col-md-12">
+			<div class="{{category}} fade show" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			    	<span aria-hidden="true">&times;</span>
+			  	</button>
+			  	<p >{{ message }}</p>
+			</div>
+		</div>
+	</div>
+    {% endfor %}
+
     <div class="row mt-2 " >
         <div class="col-1" ></div>
         <div class="col " >
             <h1 class="text-center" >Tüm Not Listesi</h1>
+            {% if notlar %}
             {% for note in notlar  %}
                 <div class="card mx-auto" >
                     <div class="card-body">
@@ -54,6 +63,11 @@ Yönetim Paneli | Tüm Notlar
                     </div>
                 </div>
             {%endfor%}
+            {%else%}
+                <div class="alert alert-danger mt-4" >
+                    Sistemde girilen notunuz bulunmuyor!
+                </div>
+            {%endif%}
         </div>
         <div class="col-1" ></div>
     </div>
