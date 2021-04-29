@@ -19,6 +19,10 @@ class Notlar(BaseModel):
     yayintarihi = CharField()
     kullaniciadi = CharField()
 
+class PaylasilanNotlar(BaseModel):
+    paylasimid=CharField()
+    icid=CharField()
+
 if 'HEROKU' in os.environ:
     import urlparse, psycopg2
     urlparse.uses_netloc.append('postgres')
@@ -31,4 +35,4 @@ else:
 
 if __name__ == '__main__':
     db_proxy.connect()
-    db_proxy.create_tables([Kullanici,Notlar], safe=True)
+    db_proxy.create_tables([Kullanici,Notlar,PaylasilanNotlar], safe=True)

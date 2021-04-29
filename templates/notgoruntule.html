@@ -1,0 +1,47 @@
+{% extends "_temp2.html" %}
+{% block head %}
+<title>Yönetim Paneli | Not Görüntüle</title>
+
+{% endblock head %}
+
+{% block icerik %}
+{% if note %}
+{%for k in note%}
+<div class="container" >
+    <div class="row justify-content-center mt-2">
+
+        <div class="col-12 col-md-10 col-lg-8">
+           <h3> {{k.baslik|safe}}</h3>
+        </div>
+
+    </div>
+    <div class="row justify-content-center mt-2">
+        <div class="col-12 col-md-10 col-lg-8">
+<br>            {{k.icerik|safe}}
+        </div>
+    </div>
+    {% if paylasilan %}
+    {% for p in paylasilan %}
+    <div class="row float-right mt-2">
+        <input type="text" value="http://http://127.0.0.1:5000/paylasilan/{{p.paylasimid}}" class="form-control">
+    </div>
+    {%endfor%}
+    {%else%}
+        <div class="row float-right mt-2">
+            <form action="/paylas" method="POST"  >
+                <input value="{{k.id}}" name="inp_id" type="hidden">
+                <input class="btn btn-success" type="submit" value="Paylaş">
+            </form>
+        </div>
+    {%endif%}
+
+
+    </div>
+</div>
+{% endfor %}
+{%else%}
+<div class="alert alert-danger" >
+    Bu numaraya sahip bir kayıt bulunamadı!
+</div>
+{% endif %}
+{% endblock icerik%}

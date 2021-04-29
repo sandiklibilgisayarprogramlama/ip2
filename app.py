@@ -5,11 +5,12 @@ import datetime
 from flask import Flask,request,redirect,session,g,flash
 from flask.helpers import url_for
 from flask.templating import render_template
-from database import Kullanici, Notlar,db_proxy
+from database import Kullanici, Notlar, PaylasilanNotlar,db_proxy
 from werkzeug.security import generate_password_hash, check_password_hash
 #import locale
 #locale.setlocale(locale.LC_ALL, 'tr_TR.utf8')
 from peewee import *
+import uuid
 
 
 app=Flask(__name__)
@@ -47,13 +48,17 @@ def anasayfa():
         
     return render_template("index.html")
 
+
+
 @app.route("/arama",methods=["POST"])
 def arama():
     if "kadi" in session:
         if request.method=="POST":
             arama_metni = request.form.get("inp_arama")
             sonuc = Notlar.select().where(Notlar.baslik.contains(arama_metni.replace("İ","I").lower()))
-
+            for note in sonuc:
+                if len(note.icerik)>30:
+                    note.icerik = note.icerik[0:50]+" ..."
             return render_template("arama_sonuclari.html",aramasonuclari=sonuc)
     else:
         return redirect("/")
@@ -94,6 +99,22 @@ def guncelle(id):
     else:
         return redirect("/")
 
+@app.route("/notgoruntule/<id>")
+def notgoruntule(id):
+    if "kadi" in session:
+        gelennot = Notlar.select().where(Notlar.id == id)
+        paylasim = PaylasilanNotlar.select().where(PaylasilanNotlar.icid == id)
+
+        return render_template("notgoruntule.html",note = gelennot,paylasilan = paylasim)
+
+
+@app.route("/paylasilan/<paylasilan>")
+def paylasilan(paylasilan):
+        paylasim = PaylasilanNotlar.select().where(PaylasilanNotlar.paylasimid == paylasilan)
+        gelennot = Notlar.select().where(Notlar.id == paylasim.icid)
+
+        return render_template("paylasilan.html",note = gelennot)
+
 @app.route("/notekle",methods=["POST","GET"])
 def notekle():
     if "kadi" in session:
@@ -117,6 +138,9 @@ def notekle():
 def tumnotlar():
     if "kadi" in session:
         notes=Notlar.select().where(Notlar.kullaniciadi==session["kadi"])
+        for note in notes:
+            if len(note.icerik)>30:
+                note.icerik = note.icerik[0:50]+" ..."
         return render_template("tumnotlar.html",notlar=notes)
     else:
         return redirect("/")
@@ -142,6 +166,17 @@ def kayitol():
         else:
             error = "Girilen Şifreler birbiri ile uyuşmuyor"
     return render_template("kayit.html",hata = error)
+
+
+@app.route("/paylas",methods=["POST","GET"])
+def paylas():
+    if "kadi" in session:
+        if request.method == "POST":
+            gelenid = request.form.get("inp_id")
+            uuid.uuid4()
+            paylasilannot=PaylasilanNotlar.create(icid=gelenid,paylasimid=uuid)
+            paylasilannot.save()
+            return redirect("/notgoruntule/"+str(gelenid))
 
 if __name__ == "__main__":
     app.run(debug=True)

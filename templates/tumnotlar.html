@@ -54,7 +54,7 @@
             {% for note in notlar  %}
                 <div class="card mx-auto" >
                     <div class="card-body">
-                    <h5 class="card-title">{{note.baslik|safe}}</h5>
+                    <h5 class="card-title"><a href="/notgoruntule/{{note.id}}" class="card-link">{{note.baslik|safe}}</a></h5>
                     <p class="card-text">
                         {{note.icerik|safe}}
                     </p>

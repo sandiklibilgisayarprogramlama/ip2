@@ -39,12 +39,12 @@
                 {% for note in aramasonuclari  %}
                     <div class="card mx-auto" >
                         <div class="card-body">
-                        <h5 class="card-title">{{note.baslik|safe}}</h5>
-                        <p class="card-text">
+                            <h5 class="card-title"><a href="/notgoruntule/{{note.id}}" class="card-link">{{note.baslik|safe}}</a></h5>
+                            <p class="card-text">
                             {{note.icerik|safe}}
                         </p>
-                        <a href="#" class="card-link">Güncelle</a>
-                        <a href="#" class="card-link">Sil</a>
+                        <a href="/guncelle/{{note.id}}" class="card-link">Güncelle</a>
+                        <a href="/sil/{{note.id}}" class="card-link">Sil</a>
                         </div>
                     </div>
                 {%endfor%}
