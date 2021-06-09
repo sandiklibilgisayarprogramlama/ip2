@@ -4,12 +4,14 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% block baslik %}
-    
-    {% endblock baslik %}
+
     <link rel="stylesheet" href="../static/css/bootstrap.min.css">
     <script src="../static/js/jquery-3.6.0.min.js" ></script>
     <script src="../static/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    {% block baslik %}
+    
+    {% endblock baslik %}
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -21,20 +23,20 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="#">Anasayfa <span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="/">Anasayfa <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Son Güncellenenler</a>
+              <a class="nav-link" href="/songuncellenenler">Son Güncellenenler</a>
             </li>
-            <li class="nav-item dropdown d-none"> <!-- todo: giriş yapan kullanıcı menüsü -->
+            <li class="nav-item dropdown {% if 'kadi' not in session %} d-none {% endif%} " > <!-- todo: giriş yapan kullanıcı menüsü -->
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Dropdown
+                {{session["kadi"]}}
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">Bilgilerim</a>
-                <a class="dropdown-item" href="#">Benim Sayfam</a>
+                <a class="dropdown-item" href="/bilgilerim">Bilgilerim</a>
+                <a class="dropdown-item" href="/benimsayfam">Benim Sayfam</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Çıkış</a>
+                <a class="dropdown-item" href="/cikis">Çıkış</a>
               </div>
             </li>
           </ul>

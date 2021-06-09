@@ -2,6 +2,28 @@
 
 {% block baslik %}
 <title>Document</title>
+<script>
+    function checkPasswordMatch() {
+      var password = $("#sifre").val();
+      var confirmPassword = $("#sifretekrar").val();
+      if (password != confirmPassword)
+      {
+          $("#sifreuyari").html("<b class='text-danger' >Şifreler Uyuşmuyor<b>");
+          $("#btn_kayit").prop("disabled",true);
+      }
+      else
+      {
+          $("#sifreuyari").html("Şifreler Uyuşuyor");
+          $("#btn_kayit").prop("disabled",false);
+      }
+
+    }
+
+  $(document).ready(function () {
+    $("#sifre").keyup(checkPasswordMatch);
+    $("#sifretekrar").keyup(checkPasswordMatch);
+  });
+</script>
 {% endblock baslik %}
 
 {% block icerik %}
@@ -12,24 +34,68 @@
 </div>
 
 <div class="col-md-4 col-sm-12 p-3" >
-    <form  >
+    <form action="/girisyap" method="POST" >
         <div class="form-group ">
-          <label for="in1">Eposta</label>
-          <input type="email" class="form-control" id="in1" aria-describedby="emailHelp">
+          <label for="in1">Kullanıcı Adı</label>
+          <input type="text" name="inp_kadi" class="form-control" id="in1" aria-describedby="emailHelp">
         </div>
         <div class="form-group">
           <label for="in2">Şifre</label>
-          <input type="password" class="form-control" id="in2">
+          <input type="password" name="inp_sifre" class="form-control" id="in2">
         </div>
         <div class="form-group form-check">
           <input type="checkbox" class="form-check-input" id="exampleCheck1">
           <label class="form-check-label" for="exampleCheck1">Check me out</label>
         </div>
-        <button type="submit" class="btn btn-primary btn-block">Giriş Yap</button>
-        
-        <a href="#" class="btn btn-success btn-block">Üye Ol</a>
-
+        <input type="submit" class="btn btn-primary btn-block" value="Giriş Yap" >
       </form>
+        <a href="#" class="btn btn-success btn-block mt-3" data-toggle="modal" data-target="#uyeOlModal">Üye Ol</a>
+        
+        {% if error %}
+          <div class="alert alert-danger" >{{error}}</div>
+        {% endif %}
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="uyeOlModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Üye Ol</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form action="/uyeol" method="POST" id="modal-form" >
+                  <div class="form-group">
+                    <input type="text" class="form-control" id="adsoyad" name="inp_adsoyad" placeholder="Ad-Soyad giriniz" required>
+                  </div>
+                  <div class="form-group">
+                    <input type="email" class="form-control" id="eposta" name="inp_email" placeholder="Eposta giriniz" required>
+                  </div>
+                  <div class="form-group">
+                    <input type="text" class="form-control" id="kadi" name="inp_kadi" placeholder="Kullanıcı Adı giriniz">
+                  </div>
+                  <div class="form-group">
+                    <input type="password" class="form-control" id="sifre" name="inp_sifre" placeholder="Şifre Giriniz">
+                  </div>
+                  <div class="form-group">
+                    <input type="password" class="form-control" id="sifretekrar" name="inp_sifretekrar" placeholder="Şifre Tekrar Giriniz">
+                  </div>
+                  <div class="form-group" >
+                    <span id="sifreuyari" ></span>
+                  </div>
+                </form>
+                <div class="modal-footer">
+                  <button id="btn_kayit" type="submit" class="btn btn-success" form="modal-form">Kayıt Ol</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      
       <div class="text-center mt-2">
         <a  href="#" >Şifrenimi Unuttun</a>
         </div>
